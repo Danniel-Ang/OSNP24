@@ -47,33 +47,22 @@ int main(){
         sort(acc.begin(), acc.end());
         ll med = acc[acc.size() / 2];
 
-        ll sv1 = g[m], sv2 = g[1];
+        ll save = m;
         int l = 1, r = m, mid;
         while(l <= r){
             mid = (l + r) >> 1;
             if(g[mid] >= med){
-                sv1 = g[mid];
+                save = mid;
                 r = mid - 1;
             }else{
                 l = mid + 1;
             }
         }
-        l = 1; r = m;
-        while(l <= r){
-            mid = (l + r) >> 1;
-            if(g[mid] <= med){
-                sv2 = g[mid];
-                l = mid + 1;
-            }else{
-                r = mid - 1;
-            }
-        }
-
         ll ans1, ans2;
         ans1 = ans2 = 0;
         for(ll u: acc){
-            ans1 += abs(sv1 - u);
-            ans2 += abs(sv2 - u);
+            ans1 += abs(g[save] - u);
+            ans2 += abs( g[max(1ll, save-1)] - u);
         }
         sum += min(ans1, ans2);
     }

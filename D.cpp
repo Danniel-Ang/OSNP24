@@ -1,9 +1,7 @@
 #include <iostream>
 #include <cstring>
-
 using namespace std;
-// 16
-// 114240
+
 int main(){
     string b, y;
     cin >> b >> y;
