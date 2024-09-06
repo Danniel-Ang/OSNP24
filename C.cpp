@@ -2,7 +2,7 @@
 typedef long long ll;
 using namespace std;
 
-ll ar[1000001];
+ll pref[1000001];
 
 int main(){
      ll n, m;
@@ -12,22 +12,22 @@ int main(){
 
      for(int i = 0; i < n; i++){
           ll in; cin >> in;
-          ar[in-1]++;
-          maxx = max(maxx, in-1);
-     }   
-
-     ll cnt = ar[maxx];
-     for(int i = maxx-1; i >= 0; i--){
-          cnt += ar[i];
-          ar[i] = ar[i+1] + cnt;
-          // cout << i << " " << ar[i] << endl;
+          in--;
+          pref[in]++;
+          maxx = max(maxx, in);
      }
 
-     int l, r, mid; l = 0; r = maxx;
+     ll cnt = 0;
+     for(int i = maxx; i >= 0; i--){
+          cnt += pref[i];
+          pref[i] = cnt + pref[i+1];
+     }
+
      ll ans = -1;
+     ll l = 0, r = maxx, mid;
      while(l <= r){
-          mid = (l + r) >> 1;
-          if(ar[mid] >= m){
+          mid = (l + r)/2;
+          if(pref[mid] >= m){
                ans = mid;
                l = mid + 1;
           }else{

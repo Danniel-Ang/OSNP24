@@ -26,13 +26,16 @@ typedef vector<vi> vvi;
 main(){
 semoga_ac;
     ll n, m; cin >> n >> m;
-    ll nm = n + m - 1;
+    ll jln_terpendek = (n + m - 1);
+    ll decision = min(n, m) - 1;
+    ll g_decision = jln_terpendek - decision;
+
     ll sum = 0;
-    nm -= min(n, m) - 1;
-    sum += nm * (nm + 1ll) / 2ll; 
-    for(ll i = 0; i < min(n, m) - 1; i++){
-        nm += 2ll;
-        sum += nm;
+    sum += g_decision * (g_decision + 1ll) / 2ll;
+
+    for(int i = 0; i < decision; i++){
+        g_decision += 2;
+        sum += g_decision;
     }
     cout << sum;
 }

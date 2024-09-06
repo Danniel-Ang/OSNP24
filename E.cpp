@@ -21,52 +21,57 @@ int main(){
         cin >> g[i];
     }
     sort(g + 1, g + m + 1);
-    for(int i = 0; i < k; i++){
-        int p, q; cin >> p >> q;
-        adj[p].push_back(q);
-        adj[q].push_back(p);
-    }  
+
+    for(int i = 1; i <= k; i++){
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
     for(int i = 1; i <= n; i++){
         if(vis[i]) continue;
+        vis[i] = true;
 
-        vector <ll> acc = {b[i]};
-        vis[i] = true;            
-        queue <int> q; q.push(i);
+        queue <int> q;
+        vector <ll> v;
+
+        v.push_back(b[i]);
+        q.push(i);
+
         while(!q.empty()){
             int now = q.front();
             q.pop();
-            for(int u : adj[now]){
-                if(!vis[u]){
-                    q.push(u);
-                    vis[u] = true;
-                    acc.push_back(b[u]);
-                }
+
+            for(int u: adj[now]){
+                if(vis[u]) continue;
+                vis[u] = true;
+                q.push(u);
+                v.push_back(b[u]);
             }
         }
+        sort(v.begin(), v.end());
+        ll med = v[v.size() / 2];
 
-        sort(acc.begin(), acc.end());
-        ll med = acc[acc.size() / 2];
-
-        ll save = m;
-        int l = 1, r = m, mid;
+        int l, r, mid, save = 1;
+        l = 1; r = m;
         while(l <= r){
-            mid = (l + r) >> 1;
-            if(g[mid] >= med){
+            mid = (l + r) / 2;
+            if(g[mid] <= med){
                 save = mid;
-                r = mid - 1;
-            }else{
                 l = mid + 1;
-            }
+            } else r = mid - 1;
         }
-        ll ans1, ans2;
-        ans1 = ans2 = 0;
-        for(ll u: acc){
-            ans1 += abs(g[save] - u);
-            ans2 += abs( g[max(1ll, save-1)] - u);
+
+        ll ans1 = 0;
+        ll ans2 = 0;
+        for(ll u: v){
+            ans1 += abs(u - g[save]);
+            if(save + 1 <= m) ans2 += abs(u - g[save + 1]);
         }
-        sum += min(ans1, ans2);
+        if(save + 1 <= m) sum += min(ans1, ans2);
+        else sum += ans1;
+        // cout << sum << endl;
     }
     cout << sum;
 }
-
-// 1 2 2 4 7 7 8
